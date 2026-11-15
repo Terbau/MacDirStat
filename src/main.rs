@@ -1,4 +1,5 @@
 mod cleanup;
+mod demo;
 mod scan;
 mod tree;
 mod treemap;
@@ -39,7 +40,12 @@ fn main() -> eframe::Result {
         }
         return Ok(());
     }
-    let initial = args.get(1).map(PathBuf::from);
+    let demo = args.get(1).map(String::as_str) == Some("--demo");
+    if demo {
+        // Synthetic data for screenshots; make the cleanup rules see the fake home.
+        unsafe { std::env::set_var("HOME", demo::HOME) };
+    }
+    let initial = args.get(1).filter(|_| !demo).map(PathBuf::from);
     let options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default()
             .with_title("MacDirStat")
@@ -53,7 +59,10 @@ fn main() -> eframe::Result {
         Box::new(move |cc| {
             cc.egui_ctx.set_visuals(egui::Visuals::dark());
             let mut app = App::default();
-            if let Some(p) = initial {
+            if demo {
+                app.finish_scan(ScanResult { tree: demo::build(), elapsed: Duration::from_millis(2380) });
+                app.disk = Some((494_380_000_000, 41_200_000_000));
+            } else if let Some(p) = initial {
                 app.start_scan(p);
             }
             Ok(Box::new(app))

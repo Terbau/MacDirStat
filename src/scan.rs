@@ -21,13 +21,13 @@ pub struct Progress {
     pub current: Mutex<String>,
 }
 
-struct TmpNode {
-    name: Box<str>,
-    size: u64,
-    files: u64,
-    mtime: i64,
-    is_dir: bool,
-    children: Vec<TmpNode>,
+pub(crate) struct TmpNode {
+    pub(crate) name: Box<str>,
+    pub(crate) size: u64,
+    pub(crate) files: u64,
+    pub(crate) mtime: i64,
+    pub(crate) is_dir: bool,
+    pub(crate) children: Vec<TmpNode>,
 }
 
 struct Ctx<'a> {
@@ -347,7 +347,7 @@ pub fn scan(root: PathBuf, progress: Arc<Progress>) -> ScanResult {
 
 /// Convert the owned tree into a flat arena where each node's children are
 /// contiguous and sorted by size (largest first).
-fn flatten(root: TmpNode, root_path: PathBuf) -> Tree {
+pub(crate) fn flatten(root: TmpNode, root_path: PathBuf) -> Tree {
     let mut nodes: Vec<FlatNode> = Vec::with_capacity(1024);
     let mut ext_map: HashMap<Box<str>, u16> = HashMap::new();
     let mut exts: Vec<ExtStat> = Vec::new();

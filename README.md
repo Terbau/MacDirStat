@@ -2,6 +2,10 @@
 
 A fast WinDirStat-style disk usage viewer for macOS, written in Rust (egui).
 
+![MacDirStat screenshot](docs/screenshot.png)
+
+<sub>Screenshot uses generated demo data (`macdirstat --demo`).</sub>
+
 - **Cushion treemap**: every file is a rectangle sized by its disk usage and colored by file type.
 - **Cleanup Suggestions**: build output (node_modules, target, .next, DerivedData, Pods, build, …),
   caches (~/Library/Caches, npm/pnpm/cargo/gradle/…), Xcode/simulator leftovers, installers,
@@ -19,6 +23,7 @@ open dist/MacDirStat.app
 
 Or straight from the terminal: `cargo run --release -- ~/some/folder`.
 Headless summary: `target/release/macdirstat --report ~`.
+Demo with fake data (for screenshots): `target/release/macdirstat --demo`.
 
 For complete results, grant the app **Full Disk Access** in
 System Settings → Privacy & Security → Full Disk Access.
